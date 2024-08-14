@@ -19,19 +19,28 @@ useEffect(() => {
   .catch(error => console.error('api yuklenırken hata oluştu'))
 
 },[])
+
+const toggleTodoCompletion = (id) => {
+  setTodos((prevTodos) => 
+  prevTodos.map((todo) => todo.id === id ? { ...todo, completed: !todo.completed} :todo)
+  )
+}
+
   return (
     <div className='flex justify-center flex-col items-center py-8'>
       <h1 className='text-2xl font-bold pb-4'>Yapılacaklar Listem</h1>
       <div className='space-y-5'>{/* todos buraya */}
         {todos.map((todo) => (
-          <Todo key={todo.id} title={todo.title} completed={todo.completed} />
+          <Todo key={todo.id} title={todo.title} 
+          completed={todo.completed} 
+          onToggle = {() => toggleTodoCompletion(todo.id)}/>
         ))}
       </div>
     </div>
   )
 }
 
-function Todo({title,completed}) {
+function Todo({title,completed, onToggle}) {
   return (
     <div className='relative flex items-start'>
       <div className='flex h-6 items-center'>
@@ -41,6 +50,8 @@ function Todo({title,completed}) {
           type='checkbox'
           // defaultChecked={false}
           checked={completed}
+          onChange={onToggle}
+          
           className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
         />
       </div>
